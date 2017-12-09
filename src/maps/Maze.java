@@ -16,7 +16,7 @@ public class Maze {
 			{ 1, 0 }, // down
 			{ 0, -1 }, // left
 			{ -1, 0 } };// up
-	char[] dir = { '¡ú', '¡ı', '¡û', '¡ü' };
+	char[] dir = { 'â†’', 'â†“', 'â†', 'â†‘' };
 
 	char[][] maze;
 	char[][] copy; // back up of maze
