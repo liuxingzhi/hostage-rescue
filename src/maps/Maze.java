@@ -56,6 +56,11 @@ public class Maze {
 		for (int k = 0; k <= 3; k++) { // enumerate 4 directions
 			nextRow = father.row + next[k][0];
 			nextCol = father.col + next[k][1];
+			if (nextRow == endRow && nextCol == endCol) { // reach terminal
+				Node temp = new Node(nextRow, nextCol, father.step + 1, father, 'P');
+				path = temp;
+				return;
+			}
 			// boundary check
 			if (nextRow < 1 || nextRow >= height - 1 || nextCol < 1 || nextCol >= len - 1) {
 				continue;
@@ -71,7 +76,6 @@ public class Maze {
 				}
 				print(maze);
 				dfs(temp);
-
 				if (path != null) {
 					return;
 				}
@@ -83,12 +87,6 @@ public class Maze {
 					e.printStackTrace();
 				}
 				print(maze);
-			}
-			if (nextRow == endRow && nextCol == endCol) { // reach terminal
-				Node temp = new Node(nextRow, nextCol, father.step + 1, father, 'P');
-				path = temp;
-
-				return;
 			}
 		}
 		return;
@@ -107,6 +105,11 @@ public class Maze {
 			for (int k = 0; k <= 3; k++) { // enumerate 4 directions
 				nextRow = father.row + next[k][0];
 				nextCol = father.col + next[k][1];
+				if (nextRow == endRow && nextCol == endCol) { // reach terminal
+					Node temp = new Node(nextRow, nextCol, father.step + 1, father, 'P');
+					stack.add(temp);
+					break label;
+				}
 				// boundary check
 				if (nextRow < 1 || nextRow >= height - 1 || nextCol < 1 || nextCol >= len - 1) {
 					continue;
@@ -117,11 +120,6 @@ public class Maze {
 					stack.add(temp);
 					findWay = true;
 					book[nextRow][nextCol] = 'V'; // have visited this point
-				}
-				if (nextRow == endRow && nextCol == endCol) { // reach terminal
-					Node temp = new Node(nextRow, nextCol, father.step + 1, father, 'P');
-					stack.add(temp);
-					break label;
 				}
 				try {
 					Thread.sleep(50);

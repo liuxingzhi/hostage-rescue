@@ -4,36 +4,32 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 
 public class Console {
 
 	public static void main(String[] args) {
-		String file = "./src/maps/map4.txt";
-		Maze m1 = new Maze(readMaze(file));
-		System.out.println(m1.path);
-		m1.print();	
-		Node tail = m1.dfs();
-		m1.printPath();
-	}
-
-	public static char[][] copy(char[][] copy) {
-		char[][] maze = new char[copy.length][copy[0].length];
-		for (int i = 0; i < maze.length; i++) {
-			for (int j = 0; j < maze[0].length; j++) {
-				maze[i][j] = copy[i][j];
-			}
+		Scanner scan = new Scanner(System.in);
+		System.out.println("which number of map would you like to use");
+		int num = scan.nextInt();
+		String file = "./src/maps/map" + num +".txt";
+		System.out.println("which kind of rescue play would you to use?");
+		System.out.println("1. breath first search");
+		System.out.println("2. depth first search");
+		Maze map = new Maze(readMaze(file));
+		int method = scan.nextInt();
+		Node tail = null;
+		switch (method){
+			case 1:
+				tail = map.bfs();
+				break;
+			case 2:
+				tail = map.dfs();
+			case 3:
+				tail = map.stackdfs();
 		}
-		return maze;
-	}
-
-	public static void print(char[][] maze) {
-		for (char[] line : maze) {
-			for (char ch : line) {
-				System.out.print(ch);
-			}
-			System.out.println();
-		}
+		map.printPath(tail);
 	}
 
 	public static char[][] readMaze(String filename) {
