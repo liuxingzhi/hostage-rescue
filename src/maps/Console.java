@@ -19,6 +19,7 @@ public class Console {
 		System.out.println("2. depth first search");
 		Maze map = new Maze(readMaze(file));
 		int method = scan.nextInt();
+		scan.close();
 		Node tail = null;
 		switch (method){
 			case 1:
@@ -43,6 +44,7 @@ public class Console {
 					sb.append(s);
 					sb.append("\n");
 				}
+				br.close();
 				// System.out.println(sb);
 			} catch (Exception e) {
 				e.printStackTrace();
