@@ -41,31 +41,34 @@ public class Maze {
 		copy = copy(src);
 	}
 
-	public Node dfs() {
+	public Node dfs(){
 		Node head = new Node(startRow, startCol, 0, null, 'S');
 		dfs(head);
 		return new Node(path);
 	}
 
-	public void dfs(Node father) {
+	public void dfs(Node father){
 		if (path != null) {
 			return;
 		}
 		int nextRow;
 		int nextCol;
 		for (int k = 0; k <= 3; k++) { // enumerate 4 directions
+			if(path != null) {
+				break;
+			}
 			nextRow = father.row + next[k][0];
 			nextCol = father.col + next[k][1];
 			if (nextRow == endRow && nextCol == endCol) { // reach terminal
 				Node temp = new Node(nextRow, nextCol, father.step + 1, father, 'P');
 				path = temp;
-				return;
+//				throw new Exception("have already reach teminal");
 			}
 			// boundary check
 			if (nextRow < 1 || nextRow >= height - 1 || nextCol < 1 || nextCol >= len - 1) {
 				continue;
 			}
-			if (maze[nextRow][nextCol] == ' ') {
+			if (maze[nextRow][nextCol] == ' ' && path == null) {
 				maze[nextRow][nextCol] = dir[k];
 				Node temp = new Node(nextRow, nextCol, father.step + 1, father, dir[k]);
 				try {
@@ -77,7 +80,7 @@ public class Maze {
 				print(maze);
 				dfs(temp);
 				if (path != null) {
-					return;
+					break;
 				}
 				maze[nextRow][nextCol] = ' ';
 				try {
@@ -189,6 +192,7 @@ public class Maze {
 
 	public void printPath() {
 		Node tail = new Node(path);
+		System.out.println("number of steps to find hostage: " + tail.step);
 		int pRow = tail.row;
 		int pCol = tail.col;
 		char[][] mazePath = copy(copy);
@@ -205,6 +209,7 @@ public class Maze {
 
 	public void printPath(final Node node) {
 		Node tail = new Node(node);
+		System.out.println("number of steps to find hostage: " + tail.step);
 		int pRow = tail.row;
 		int pCol = tail.col;
 		char[][] mazePath = copy(copy);
