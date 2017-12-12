@@ -14,7 +14,7 @@ public class Console {
 		int num = scan.nextInt();
 		String file = "./src/maps/map" + num + ".txt";
 		System.out.println("which kind of rescue play would you to use?");
-		System.out.println("1. breath first search");
+		System.out.println("1. breadth first search");
 		System.out.println("2. depth first search");
 		Maze map = new Maze(readMaze(file));
 		int method = scan.nextInt();
@@ -22,7 +22,7 @@ public class Console {
 		Node tail = null;
 		switch (method) {
 		case 1:
-			System.out.println("breath first search implemented by queue");
+			System.out.println("breadth first search implemented by queue");
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
