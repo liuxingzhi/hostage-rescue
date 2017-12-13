@@ -1,5 +1,8 @@
 package maps;
-
+/**
+ * a helper class to record path.
+ * each Node represent a point and direction in a maze.
+ */
 public class Node {
 	public int row;
 	public int col;

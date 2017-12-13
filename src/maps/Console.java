@@ -6,8 +6,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Scanner;
 
+/**demo class*/
 public class Console {
-
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("which number of map would you like to use");
@@ -19,7 +19,6 @@ public class Console {
 		Maze map = new Maze(readMaze(file));
 		int method = scan.nextInt();
 		scan.close();
-		Node tail = null;
 		switch (method) {
 		case 1:
 			System.out.println("breadth first search implemented by queue");
@@ -29,7 +28,7 @@ public class Console {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			tail = map.bfs();
+			map.bfs();
 			System.out.println("this gives the shortest path");
 			break;
 		case 2:
@@ -40,7 +39,7 @@ public class Console {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			tail = map.dfs();
+			map.dfs();
 			break;
 		case 3:
 			System.out.println("depth first search implemented by stack");
@@ -50,12 +49,13 @@ public class Console {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			tail = map.stackdfs();
+			map.stackdfs();
 			break;
 		}
-		map.printPath(tail);
+		map.printPath();
 	}
 
+	/**read from file*/
 	public static char[][] readMaze(String filename) {
 		String s = null;
 		StringBuffer sb = new StringBuffer();

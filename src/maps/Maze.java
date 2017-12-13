@@ -4,22 +4,24 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class Maze {
-	int startCol = 0;
-	int startRow = 0;
-	int endCol = 0;
-	int endRow = 0;
-	int height = 0;
-	int len = 0;
-	Node path = null;
+	private int startCol = 0;
+	private int startRow = 0;
+	private int endCol = 0;
+	private int endRow = 0;
+	private int height = 0;
+	private int len = 0;
+	private Node path = null;
 
-	int[][] next = { { 0, 1 }, // right
+	//directions
+	private final int[][] next = 
+			{ { 0, 1 }, // right
 			{ 1, 0 }, // down
 			{ 0, -1 }, // left
 			{ -1, 0 } };// up
-	char[] dir = { '>', 'v', '<', '^' };
+	private final char[] dir = { '→', '↓', '←', '↑' };
 
-	char[][] maze;
-	char[][] copy; // back up of maze
+	private char[][] maze;
+	private char[][] copy; // back up of maze
 
 	public Maze(char[][] src) {
 		height = src.length;
@@ -38,23 +40,25 @@ public class Maze {
 				}
 			}
 		}
-		copy = copy(src);
+		copy = Maze.copy(src);
 	}
 
-	public Node dfs(){
+	/**depth first search, wrapper method (recursion)*/
+	public Node dfs() {
 		Node head = new Node(startRow, startCol, 0, null, 'S');
 		dfs(head);
 		return new Node(path);
 	}
 
-	public void dfs(Node father){
+	/**inner method*/
+	private void dfs(Node father) {
 		if (path != null) {
 			return;
 		}
 		int nextRow;
 		int nextCol;
 		for (int k = 0; k <= 3; k++) { // enumerate 4 directions
-			if(path != null) {
+			if (path != null) {
 				break;
 			}
 			nextRow = father.row + next[k][0];
@@ -62,7 +66,7 @@ public class Maze {
 			if (nextRow == endRow && nextCol == endCol) { // reach terminal
 				Node temp = new Node(nextRow, nextCol, father.step + 1, father, 'P');
 				path = temp;
-//				throw new Exception("have already reach teminal");
+				// throw new Exception("have already reach teminal");
 			}
 			// boundary check
 			if (nextRow < 1 || nextRow >= height - 1 || nextCol < 1 || nextCol >= len - 1) {
@@ -77,7 +81,7 @@ public class Maze {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				print(maze);
+				print();
 				dfs(temp);
 				if (path != null) {
 					break;
@@ -89,12 +93,13 @@ public class Maze {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				print(maze);
+				print();
 			}
 		}
 		return;
 	}
 
+	/**depth first search implemented by stack*/
 	public Node stackdfs() {
 		Deque<Node> stack = new LinkedList<Node>();
 		Node head = new Node(startRow, startCol, 0, null, 'S');
@@ -130,7 +135,7 @@ public class Maze {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				print(maze);
+				print();
 			}
 			if (!findWay) {
 				Node n = stack.pollLast();
@@ -141,6 +146,7 @@ public class Maze {
 		return path = stack.getLast();
 	}
 
+	/**breadth first search implemented by queue*/
 	public Node bfs() {
 		// breath first search
 		Deque<Node> que = new LinkedList<Node>();
@@ -183,13 +189,14 @@ public class Maze {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				print(maze);
+				print();
 			}
 		}
 		Node tail = que.getLast();
 		return path = tail;
 	}
 
+	/**print the path to find hostage*/
 	public void printPath() {
 		Node tail = new Node(path);
 		System.out.println("number of steps to find hostage: " + tail.step);
@@ -207,7 +214,8 @@ public class Maze {
 		print(mazePath);
 	}
 
-	public void printPath(final Node node) {
+	/**print the path to find hostage*/
+	public static void printPath(final Node node,char[][] copy) {
 		Node tail = new Node(node);
 		System.out.println("number of steps to find hostage: " + tail.step);
 		int pRow = tail.row;
@@ -221,14 +229,26 @@ public class Maze {
 			mazePath[pRow][pCol] = tail.dir;
 		}
 		System.out.println("The path is:");
-		print(mazePath);
+		Maze.print(mazePath);
 	}
 
 	public void init() {
-		maze = copy(copy);
+		maze = Maze.copy(copy);
 	}
-
-	public char[][] copy(char[][] src) {
+	
+	/**copy the original map before search*/
+	public char[][] copy() {
+		char[][] maze = new char[copy.length][copy[0].length];
+		for (int i = 0; i < maze.length; i++) {
+			for (int j = 0; j < maze[0].length; j++) {
+				maze[i][j] = copy[i][j];
+			}
+		}
+		return maze;
+	}
+	
+	/**copy a char array*/
+	public static char[][] copy(char[][] src) {
 		char[][] maze = new char[src.length][src[0].length];
 		for (int i = 0; i < maze.length; i++) {
 			for (int j = 0; j < maze[0].length; j++) {
@@ -238,7 +258,8 @@ public class Maze {
 		return maze;
 	}
 
-	public void print() {
+	/**print the maze status, test use only*/
+	private void print() {
 		for (char[] line : maze) {
 			for (char ch : line) {
 				System.out.print(ch);
@@ -248,6 +269,7 @@ public class Maze {
 		System.out.println();
 	}
 
+	/**print a 2d char array*/
 	public static void print(char[][] maze) {
 		for (char[] line : maze) {
 			for (char ch : line) {
